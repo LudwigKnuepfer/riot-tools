@@ -48,7 +48,6 @@ void shell_putchar(int c)
 }
 
 
-
 void radio(void) {
     msg_t m;
     radio_packet_t *p;
@@ -126,7 +125,7 @@ void sc_start_stop_radio(char *str)
     }
 }
 
-void traffic_gen(int count, int size, radio_address_t addr)
+void traffic_gen(int count, int size, radio_address_t addr, unsigned long delay)
 {
     msg_t mesg;
     transceiver_command_t tcmd;
@@ -149,18 +148,25 @@ void traffic_gen(int count, int size, radio_address_t addr)
         msg_send_receive(&mesg, &mesg, transceiver_pid);
         response = mesg.content.value;
         printf(".");
+        if (delay != 0) {
+            hwtimer_wait(HWTIMER_TICKS(delay));
+        }
     }
     printf("\n");
 }
 
 void sc_traffic_gen(char *str)
 {
-    int count, size;
+    int count, size, delay;
     radio_address_t addr;
     char *tok;
     
     if (strlen(str) < 3) {
-        printf("usage: tg <count> <size> <address>\n");
+        printf("usage: tg <count> <size> <delay> <address>\n"
+                "\tcount:\tint packets\n"
+                "\tsize:\tint bytes\n"
+                "\tdelay:\tint milliseconds\n"
+                "\taddress: radio_address_t\n");
         return;
     }
 
@@ -185,6 +191,20 @@ void sc_traffic_gen(char *str)
         return;
     }
 
+    /* delay */
+    tok = strtok(NULL, " ");
+    if (tok) {
+        delay = atoi(tok)*1000;
+        if (delay < 0) {
+            printf("delay needs to be positive or zero.\n");
+            return;
+        }
+    }
+    else {
+        printf("no delay given\n");
+        return;
+    }
+
     /* address */
     tok = strtok(NULL, " ");
     if (tok) {
@@ -196,7 +216,7 @@ void sc_traffic_gen(char *str)
     }
 
     /* run */
-    traffic_gen(count, size, addr);
+    traffic_gen(count, size, addr, delay);
 }
 
 const shell_command_t shell_commands[] = {
