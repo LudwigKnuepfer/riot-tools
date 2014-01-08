@@ -243,7 +243,7 @@ int main(void)
 
     /* initialize shell */
     shell_t shell;
-    shell_init(&shell, shell_commands, shell_readc, shell_putchar);
+    shell_init(&shell, shell_commands, UART0_BUFSIZE, shell_readc, shell_putchar);
     shell_run(&shell);
 
     return 0;
