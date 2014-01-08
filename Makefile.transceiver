@@ -19,3 +19,6 @@ endif
 ifneq (,$(findstring native,$(BOARD)))
 	USEMODULE += nativenet
 endif
+ifneq (,$(findstring chronos,$(BOARD)))
+	USEMODULE += cc110x_ng
+endif
