@@ -1,15 +1,8 @@
-# for easy switching of boards
-ifeq (,$(BOARD))
-export BOARD = native
-endif
-
-# default RIOT dir (absolute path)
-ifeq (,$(RIOTBASE))
-export RIOTBASE = $(CURDIR)/../../RIOT
-endif
+export BOARD ?= native
+export RIOTBASE ?= $(CURDIR)/../../RIOT
+export QUIET ?= 1
 
 # default includes
-export INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTBASE)/cpu/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/
 
 valgrind: CFLAGS += -g
 valgrind: CFLAGS += -DHAVE_VALGRIND_VALGRIND_H
