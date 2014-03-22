@@ -7,6 +7,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <inttypes.h>
 #include <time.h>
@@ -155,29 +156,30 @@ void traffic_gen(int count, int size, radio_address_t addr, unsigned long delay)
     printf("\n");
 }
 
+void sc_traffic_gen_usage()
+{
+    printf("usage: tg <count> <size> <delay> <address>\n"
+            "\tcount:\tint packets\n"
+            "\tsize:\tint bytes\n"
+            "\tdelay:\tint milliseconds\n"
+            "\taddress: radio_address_t\n");
+    return;
+}
+
 void sc_traffic_gen(char *str)
 {
     int count, size, delay;
     radio_address_t addr;
     char *tok;
     
-    if (strlen(str) < 3) {
-        printf("usage: tg <count> <size> <delay> <address>\n"
-                "\tcount:\tint packets\n"
-                "\tsize:\tint bytes\n"
-                "\tdelay:\tint milliseconds\n"
-                "\taddress: radio_address_t\n");
-        return;
-    }
-
-    tok = strtok(str + 2, " ");
+    tok = strtok(str, " ");
 
     /* count */
     if (tok) {
         count = atoi(tok);
     }
     else {
-        printf("no count given\n");
+        sc_traffic_gen_usage();
         return;
     }
 

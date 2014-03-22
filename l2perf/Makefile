@@ -7,7 +7,6 @@ CFLAGS += -DSCHEDSTATISTICS
 
 # Modules to include. 
 USEMODULE += auto_init
-USEMODULE += hwtimer
 USEMODULE += posix
 USEMODULE += uart0
 USEMODULE += shell
