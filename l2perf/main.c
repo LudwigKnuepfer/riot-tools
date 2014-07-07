@@ -25,11 +25,9 @@
 
 #define SND_BUFFER_SIZE     (100)
 #define RCV_BUFFER_SIZE     (64)
-#define RADIO_STACK_SIZE    (KERNEL_CONF_STACKSIZE_PRINTF)
+#define RADIO_STACK_SIZE    (KERNEL_CONF_STACKSIZE_MAIN)
 
-#ifdef MODULE_NATIVENET
-#define TRANSCEIVER_TYPE TRANSCEIVER_NATIVE
-#endif
+#define TRANSCEIVER_TYPE TRANSCEIVER_DEFAULT
 
 char radio_stack_buffer[RADIO_STACK_SIZE];
 msg_t msg_q[RCV_BUFFER_SIZE];
@@ -113,12 +111,17 @@ void stop_radio()
     }
 }
 
-void sc_start_stop_radio(char *str)
+void sc_start_stop_radio(int argc, char **argv)
 {
-    if (strcmp(str + 6, "start") == 0) {
+    if (argc != 2) {
+        printf("usage: radio <start|stop>\n");
+        return;
+    }
+
+    if (strcmp(argv[1], "start") == 0) {
         start_radio();
     }
-    else if (strcmp(str + 6, "stop") == 0) {
+    else if (strcmp(argv[1], "stop") == 0) {
         stop_radio();
     }
     else {
@@ -166,56 +169,24 @@ void sc_traffic_gen_usage()
     return;
 }
 
-void sc_traffic_gen(char *str)
+void sc_traffic_gen(int argc, char **argv)
 {
     int count, size, delay;
     radio_address_t addr;
-    char *tok;
-    
-    tok = strtok(str, " ");
 
-    /* count */
-    if (tok) {
-        count = atoi(tok);
-    }
-    else {
+    if (argc != 5) {
         sc_traffic_gen_usage();
         return;
     }
 
-    /* size */
-    tok = strtok(NULL, " ");
-    if (tok) {
-        size = atoi(tok);
-    }
-    else {
-        printf("no size given\n");
+    count = atoi(argv[1]);
+    size = atoi(argv[2]);
+    delay = atoi(argv[3])*1000;
+    if (delay < 0) {
+        printf("delay needs to be positive or zero.\n");
         return;
     }
-
-    /* delay */
-    tok = strtok(NULL, " ");
-    if (tok) {
-        delay = atoi(tok)*1000;
-        if (delay < 0) {
-            printf("delay needs to be positive or zero.\n");
-            return;
-        }
-    }
-    else {
-        printf("no delay given\n");
-        return;
-    }
-
-    /* address */
-    tok = strtok(NULL, " ");
-    if (tok) {
-        addr = atoi(tok);
-    }
-    else {
-        printf("no address given\n");
-        return;
-    }
+    addr = atoi(argv[4]);
 
     /* run */
     traffic_gen(count, size, addr, delay);

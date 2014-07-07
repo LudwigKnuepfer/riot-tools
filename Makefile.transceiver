@@ -1,24 +1,3 @@
 # all transceiver modules
 
-USEMODULE += transceiver
-ifneq (,$(findstring wsn430-v1_3b,$(BOARD)))
-	USEMODULE += cc110x_ng
-endif
-ifneq (,$(findstring wsn430-v1_4,$(BOARD)))
-	USEMODULE += cc2420
-endif
-ifneq (,$(findstring msb-430,$(BOARD)))
-	USEMODULE += cc2040
-endif
-ifneq (,$(findstring msb-430h,$(BOARD)))
-	USEMODULE += cc110x_ng
-endif
-ifneq (,$(findstring msba2,$(BOARD)))
-	USEMODULE += cc110x_ng
-endif
-ifneq (,$(findstring native,$(BOARD)))
-	USEMODULE += nativenet
-endif
-ifneq (,$(findstring chronos,$(BOARD)))
-	USEMODULE += cc110x_ng
-endif
+USEMODULE += defaulttransceiver

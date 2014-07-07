@@ -1,7 +1,7 @@
 include ../Makefile.include
 
-# name of your project
-export PROJECT = l2perf
+# name of your application
+export APPLICATION = l2perf
 
 CFLAGS += -DSCHEDSTATISTICS
 
