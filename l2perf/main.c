@@ -31,7 +31,6 @@
 
 char radio_stack_buffer[RADIO_STACK_SIZE];
 msg_t msg_q[RCV_BUFFER_SIZE];
-uint8_t snd_buffer[NATIVE_MAX_DATA_LENGTH];
 int radio_pid;
 
 int shell_readc(void)
@@ -80,7 +79,7 @@ void radio(void) {
     }
 }
 
-void start_radio()
+void start_radio(void)
 {
     if(radio_pid == -1) {
         printf("starting radio thread..");
@@ -99,7 +98,7 @@ void start_radio()
     }
 }
 
-void stop_radio()
+void stop_radio(void)
 {
     if (radio_pid == -1) {
         printf("radio thread not running");
@@ -159,7 +158,7 @@ void traffic_gen(int count, int size, radio_address_t addr, unsigned long delay)
     printf("\n");
 }
 
-void sc_traffic_gen_usage()
+void sc_traffic_gen_usage(void)
 {
     printf("usage: tg <count> <size> <delay> <address>\n"
             "\tcount:\tint packets\n"
