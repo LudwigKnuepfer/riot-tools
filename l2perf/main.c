@@ -204,12 +204,6 @@ int main(void)
     /* initialize posix */
     posix_open(uart0_handler_pid, 0);
 
-    /* initialize transceiver */
-    printf("initializing and starting transceiver..");
-    transceiver_init(TRANSCEIVER_TYPE);
-    transceiver_start();
-    printf(". done\n");
-
     /* XXX: too much convenience? */
     start_radio();
 
