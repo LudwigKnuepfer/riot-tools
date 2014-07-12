@@ -46,7 +46,10 @@ void shell_putchar(int c)
 }
 
 
-void radio(void) {
+void *radio(void *arg)
+{
+    (void) arg;
+
     msg_t m;
     radio_packet_t *p;
     radio_packet_length_t i;
@@ -77,6 +80,8 @@ void radio(void) {
             puts("Unknown packet received");
         }
     }
+
+    return NULL;
 }
 
 void start_radio(void)
@@ -88,7 +93,7 @@ void start_radio(void)
                 RADIO_STACK_SIZE,
                 PRIORITY_MAIN-2,
                 CREATE_STACKTEST,
-                radio,
+                radio, NULL,
                 "radio");
         transceiver_register(TRANSCEIVER_TYPE, radio_pid);
         printf(" done\n");
