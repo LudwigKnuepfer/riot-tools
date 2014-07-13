@@ -5,7 +5,6 @@ USEMODULE += shell
 USEMODULE += shell_commands
 USEMODULE += ps
 USEMODULE += vtimer
-USEMODULE += auto_init
 
 # all board specific modules
 ifneq (,$(findstring wsn430-v1_3b,$(BOARD)))
