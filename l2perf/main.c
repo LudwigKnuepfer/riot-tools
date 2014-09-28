@@ -107,6 +107,8 @@ void *expect_traffic(void *arg)
         uint32_t last_seq = 0;
         uint32_t reordered = 0;
         uint32_t tot_len = 0;
+        uint32_t t_first_seq;
+        uint32_t t_last_seq;
 
         printf("expecting %"PRIu32" packets\n", expect_count);
         while (1) {
@@ -152,6 +154,10 @@ void *expect_traffic(void *arg)
                         break;
                 }
 
+                if (hdr->seq == 0) {
+                    t_first_seq = hdr->ts;
+                }
+
                 if (last_seq > hdr->seq) {
                     reordered++;
                 }
@@ -162,6 +168,7 @@ void *expect_traffic(void *arg)
 
                 p->processing--;
                 if (tot_pack >= expect_count) {
+                    t_last_seq = hdr->ts;
                     break;
                 }
             }
@@ -181,6 +188,7 @@ void *expect_traffic(void *arg)
         printf("total packets: %"PRIu32"\n", tot_pack);
         printf("total size: %"PRIu32"\n", tot_len);
         printf("last_seq: %"PRIu32"\n", last_seq);
+        printf("t_last_seq - t_first_seq: %"PRIu32"\n", t_last_seq - t_first_seq);
 
         thread_sleep();
     }
@@ -260,7 +268,7 @@ void *monitor(void *arg)
             puts("\n");
         }
         else if (m.type == ENOBUFFER) {
-            puts("Transceiver buffer full");
+            //puts("Transceiver buffer full");
         }
         else {
             puts("Unknown packet received");
