@@ -11,13 +11,24 @@
 #include "hwtimer.h"
 #include "thread.h"
 
+/* Make sure initial time is set */
+#ifndef RIOTWATCH_H_INIT
+#define RIOTWATCH_H_INIT (0)
+#endif
+#ifndef RIOTWATCH_M_INIT
+#define RIOTWATCH_M_INIT (0)
+#endif
+#ifndef RIOTWATCH_S_INIT
+#define RIOTWATCH_S_INIT (0)
+#endif
+
 int main(void)
 {
     printf("time4riot\n");
 
-    int h = 0;
-    int m = 0;
-    int s = 0;
+    int h = RIOTWATCH_H_INIT;
+    int m = RIOTWATCH_M_INIT;
+    int s = RIOTWATCH_S_INIT;
     for (s = 0; 1; s++) {
         /* efficiently calculate time (no division/modulo/..) */
         if (s == 60) {
