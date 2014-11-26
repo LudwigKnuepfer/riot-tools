@@ -209,6 +209,11 @@ int main(void)
     /* initialize posix */
     posix_open(uart0_handler_pid, 0);
 
+    /* initialize transceiver */
+    transceiver_init(TRANSCEIVER_TYPE);
+    transceiver_start();
+
+
     /* XXX: too much convenience? */
     start_radio();
 
